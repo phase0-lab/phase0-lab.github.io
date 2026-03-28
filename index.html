@@ -1,1 +1,387 @@
-<h1>Phase0 Lab</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase0 Lab — AI Native Product Planning Tools</title>
+  <meta name="description" content="Open-source AI-native tools for product discovery and planning. From idea to spec. From spec to code.">
+  <style>
+    :root {
+      --bg: #0a0a0b;
+      --surface: #141416;
+      --border: #23232a;
+      --text: #e4e4e7;
+      --text-secondary: #8b8b94;
+      --accent: #6d5cff;
+      --accent-glow: rgba(109, 92, 255, 0.15);
+      --green: #34d399;
+      --mono: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      padding: 32px 0 0;
+    }
+
+    .logo {
+      font-family: var(--mono);
+      font-size: 15px;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 80px 0 64px;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 52px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 .highlight {
+      color: var(--accent);
+    }
+
+    .hero .tagline {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin-bottom: 40px;
+    }
+
+    .hero .cta-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.15);
+      box-shadow: 0 0 24px var(--accent-glow);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-secondary);
+    }
+
+    /* Problem */
+    .problem {
+      padding: 64px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .problem .label {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+
+    .problem h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .problem p {
+      color: var(--text-secondary);
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    /* Stack */
+    .stack {
+      padding: 64px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .stack .label {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 32px;
+    }
+
+    .layer {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s;
+    }
+
+    .layer:hover {
+      border-color: var(--accent);
+    }
+
+    .layer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .layer-name {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .layer-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--green);
+      background: rgba(52, 211, 153, 0.1);
+      padding: 3px 10px;
+      border-radius: 99px;
+    }
+
+    .layer-tag.planned {
+      color: var(--text-secondary);
+      background: rgba(139, 139, 148, 0.1);
+    }
+
+    .layer-desc {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    /* Tools */
+    .tools {
+      padding: 64px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .tools .label {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 32px;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 540px) {
+      .tool-grid { grid-template-columns: 1fr; }
+    }
+
+    .tool-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .tool-card:hover {
+      border-color: var(--accent);
+    }
+
+    .tool-card h3 {
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .tool-card p {
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    footer {
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    footer .copy {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    footer nav {
+      display: flex;
+      gap: 24px;
+    }
+
+    footer a {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <header>
+      <div class="logo">phase0.lab</div>
+    </header>
+
+    <section class="hero">
+      <h1>
+        AI Native tools for<br>
+        <span class="highlight">product planning</span>
+      </h1>
+      <p class="tagline">
+        Open-source toolkit for product discovery and specification.
+        From idea to spec. From spec to code.
+      </p>
+      <div class="cta-group">
+        <a href="https://github.com/phase0-lab" class="btn btn-primary">GitHub</a>
+        <a href="mailto:kyle@phase0.dev" class="btn btn-secondary">Contact</a>
+      </div>
+    </section>
+
+    <section class="problem">
+      <div class="label">The Problem</div>
+      <h2>AI changed how we code. Not how we plan.</h2>
+      <p>
+        Developers have Cursor and Claude Code. Product managers still spend 40-60% of their time on context archaeology &mdash; digging through Slack threads, meeting recordings, and scattered documents.
+      </p>
+      <p>
+        Existing AI tools help you write documents faster. They don't help you think clearer. Phase0 Lab builds tools that bridge the gap between discovery and implementation.
+      </p>
+    </section>
+
+    <section class="stack">
+      <div class="label">Architecture</div>
+
+      <div class="layer">
+        <div class="layer-header">
+          <span class="layer-name">Implementation Bridge</span>
+          <span class="layer-tag planned">planned</span>
+        </div>
+        <div class="layer-desc">Spec flows directly into AI coding agents. Task decomposition with bidirectional sync.</div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-header">
+          <span class="layer-name">Living Specifications</span>
+          <span class="layer-tag planned">planned</span>
+        </div>
+        <div class="layer-desc">AI-generated PRDs, user stories, and acceptance criteria that evolve with your product context.</div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-header">
+          <span class="layer-name">Discovery &amp; Validation</span>
+          <span class="layer-tag planned">planned</span>
+        </div>
+        <div class="layer-desc">User research synthesis, competitive intelligence, hypothesis generation, and gap analysis.</div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-header">
+          <span class="layer-name">Context Intelligence</span>
+          <span class="layer-tag planned">planned</span>
+        </div>
+        <div class="layer-desc">Aggregates context from Slack, GitHub, meetings, and documents into a product knowledge graph.</div>
+      </div>
+    </section>
+
+    <section class="tools">
+      <div class="label">Tools</div>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <h3>phase0-spec</h3>
+          <p>Living specification system. Generate and maintain PRDs, user stories, and acceptance criteria from context.</p>
+        </div>
+        <div class="tool-card">
+          <h3>phase0-discovery</h3>
+          <p>Context aggregation agent. Collects signals from Slack, GitHub, meetings, and builds a product knowledge graph.</p>
+        </div>
+        <div class="tool-card">
+          <h3>phase0-radar</h3>
+          <p>Open-source competitive intelligence. Track GitHub releases, ProductHunt, changelogs, and blogs.</p>
+        </div>
+        <div class="tool-card">
+          <h3>phase0-bridge</h3>
+          <p>Planning to code. Decompose specs into tasks and feed them into Claude Code, Cursor, or Copilot.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span class="copy">Phase0 Lab</span>
+      <nav>
+        <a href="https://github.com/phase0-lab">GitHub</a>
+        <a href="mailto:kyle@phase0.dev">Email</a>
+      </nav>
+    </footer>
+
+  </div>
+
+</body>
+</html>
